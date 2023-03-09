@@ -7,7 +7,7 @@
     - hpe.ilo
   tasks:
   - name: Get physical drives details
-    ansible_python_interpreter: /usr/bin/python3.9
+    "discovered_interpreter_python": "/usr/libexec/platform-python"
     get_physical_drives_details:
       baseuri: "10.1.17.4" #"{{ baseuri }}"
       username: "admin" #"{{ username }}"
