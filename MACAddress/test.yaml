@@ -1,0 +1,28 @@
+---
+- hosts: localhost
+  tasks:
+#  - name: Test
+#    ansible.builtin.replace:
+#      dest: /root/template/HPE/MACAddress/kickstart.cfg
+#      regexp: 'centos8'
+#      replace: 'centos7'
+
+# - name: cat
+#    shell: cat ilo2.json | xargs
+#    register: results
+
+#- hosts: ks
+#  connection: local
+#  tasks:
+##  - name: cat
+##    shell: cat /root/template/HPE/MACAddress/ilo2.json | xargs
+##    register: results
+#  - name: Creates directory
+#    file:
+#      path: /root/MAC
+#      state: directory
+
+  - name: Test
+    ansible.builtin.copy:
+    src: 
+    dest: /etc/foo.conf

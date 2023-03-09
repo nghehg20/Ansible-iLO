@@ -1,0 +1,29 @@
+---
+- hosts: ilo2
+  connection: local
+  gather_facts: false
+  collections:
+    - community.general
+    - hpe.ilo
+  tasks:
+  - name: verify logical drives
+    create_logical_drives:
+      baseuri: "{{ baseuri }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+#      raid_details: "raid1" #"{{ raid_details }}"
+      raid_details: [{"LogicalDriveName": "LD1",
+                     "Raid": "Raid1",
+                     "DataDrives": {
+                        "DataDriveCount": 2,
+                        "DataDriveMediaType": "HDD",
+                        "DataDriveInterfaceType": "SATA",
+                        "DataDriveMinimumSizeGiB": 0
+                        }
+                    }]
+    register: result
+
+  - name: Logical drives verification status
+    debug:
+      msg: "{{ result }}"
+

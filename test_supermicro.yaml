@@ -1,0 +1,31 @@
+---
+- hosts: ilo2
+  connection: local
+  gather_facts: false
+  collections:
+    - community.general
+    - hpe.ilo
+  tasks:
+  - name: Simple update with additional options
+    community.general.redfish_command:
+      category: Update
+      command: SimpleUpdate
+      baseuri: "{{ baseuri }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      update_image_uri: 10.1.14.11/ks/ilo5_278_1676945755.fwpkg
+      update_protocol: HTTP
+      update_targets:
+#        - /redfish/v1/UpdateService/Actions/Oem/Hpe/HpeiLOUpdateServiceExt.AddFromUri/
+        - /redfish/v1/UpdateService/Actions/UpdateService.SimpleUpdate/
+      update_creds:
+        username: operator
+        password: supersecretpwd
+
+
+#  - name: flash fw
+#    shell: ilorest flashfwpkg /root/ilo5_278_1676945755.fwpkg
+#    register: ilo
+#    become: yes
+#
+#  - debug: var=ilo.stdout_lines

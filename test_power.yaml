@@ -1,0 +1,21 @@
+---
+- name: basic conf
+  hosts: all
+  connection: local
+  become: yes
+  collections:
+    - community.general
+    - hpe.ilo
+  roles:
+  - getnicinven
+#- name: basic conf
+#  hosts: ilo2
+#  become: yes
+#  roles:
+#  - powerforceoff
+
+#- name: basic conf
+#  hosts: ilo2
+#  become: yes
+#  roles:
+#  - poweron

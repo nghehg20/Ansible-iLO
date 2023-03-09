@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  collections:
+    - community.general
+    - hpe.ilo
+  tasks:
+  # tasks file for iLOreset
+  - name: Restart Manager gracefully
+    community.general.redfish_command:
+      category: Manager
+      command: GracefulRestart
+      baseuri: "10.1.17.3" #"{{ baseuri }}"
+      username: "admin" #"{{ username }}"
+      password: "admin123" #"{{ password }}"

@@ -1,0 +1,14 @@
+---
+- name: Get physical drives details
+  collections:
+    - community.general
+    - hpe.ilo
+  get_physical_drives_details:
+    baseuri: "{{ baseuri }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+  register: physical_drives_details
+
+- name: Physical drives present in the server
+  debug:
+    msg: "{{ physical_drives_details }}"

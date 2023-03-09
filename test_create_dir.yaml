@@ -1,0 +1,13 @@
+---
+- hosts: all
+  connection: local
+  gather_facts: false
+  collections:
+    - community.general
+    - hpe.ilo
+  tasks:
+    - name: Cat file
+      shell: cat /root/template/HPE/MACAddress/ilo1.json
+      register: content
+    - name: Create Dir
+      shell: mkdir /root/{{ baseuri }}

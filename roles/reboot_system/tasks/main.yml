@@ -1,0 +1,7 @@
+- name: Reboot system
+  community.general.redfish_command:
+    category: Systems
+    command: PowerReboot
+    baseuri: "{{ baseuri }}"
+    username: "{{ username }}"
+    password: "{{ password }}"

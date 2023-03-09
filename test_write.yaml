@@ -1,0 +1,105 @@
+---
+- hosts: ilo2
+  connection: local
+  gather_facts: false
+  collections:
+    - community.general
+    - hpe.ilo
+  tasks:
+# tasks file for getnicinven
+    - name: Get NIC Information
+      community.general.redfish_info:
+        category: Systems
+        command: GetNicInventory
+        baseuri: "{{ baseuri }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+      register: jsoncontent
+    - copy: content="{{ jsoncontent.redfish_facts.nic.entries.0.1.0.MACAddress | to_nice_json }}" dest="/root/template/HPE/MACAddress/{{ baseuri }}.json"
+    - name: Test
+      ansible.builtin.replace:
+        dest: /root/template/HPE/MACAddress/{{ baseuri }}.json
+        regexp: ':'
+        replace: '-'
+    - name: Cat file
+      shell: cat /root/template/HPE/MACAddress/{{ baseuri }}.json | xargs
+      register: MACAddress
+#    - name: Mkdir
+#      shell: mkdir /root/template/HPE/MACAddress/01-{{ MACAddress.stdout }}
+    - name: Grub.cfg
+      shell: cp /root/template/HPE/MACAddress/kickstart.cfg /root/template/HPE/MACAddress/grub.cfg-01-{{ MACAddress.stdout }}
+#    - name: Coppy
+#      shell: scp -r  /root/template/HPE/MACAddress/01-{{ MACAddress.stdout }} 10.1.14.11:/var/lib/tftpboot/pxelinux.cfg/01-{{ MACAddress.stdout }}
+#    - name: Remove Dir
+#      shell: rm -rf /root/template/HPE/MACAddress/01-*
+    - name: Coppy SCP
+      shell: scp -r /root/template/HPE/MACAddress/grub.cfg-01-{{ MACAddress.stdout }} 10.1.14.11:/var/lib/tftpboot/
+
+- hosts: ilo2
+  connection: local
+  gather_facts: false
+  collections:
+    - community.general
+    - hpe.ilo
+  roles:
+#    - setbiosdefault
+    - poweron
+
+
+
+#- name: PLaybook to check set_stats
+#  hosts: localhost
+#  gather_facts: true
+#  tasks:   
+#    - name: content of set_stats
+#      debug:
+#        msg: "{{ test_stat }}" 
+
+#    - name: Show result of task
+#      debug:
+#        var: jsoncontent.redfish_facts.nic.entries.0.1.0.MACAddress
+
+#    - name: Cat file
+#      shell: "cat /root/template/HPE/test_file.json | jq '.plays[].tasks[]' | jq  'select (.task.name == "hpe.ilo.getnicinven : Get NIC Information")' | jq '.hosts.ilo2.redfish_facts.nic.entries[]' | jq '.[1]'  | jq '.[1] | .MACAddress'"
+
+##      action: shell cat /root/template/HPE/MACAddress/{{ baseuri }}.json | jq '.redfish_facts.nic.entries[]' | jq '.[1]'  | jq '.[1] | .MACAddress'
+#      shell: cat /root/template/HPE/MACAddress/{{ baseuri }}.json | jq '.redfish_facts.nic.entries[]' | jq '.[1]'  | jq '.[0] | .MACAddress'
+#      register: results
+#    - debug: msg="{{ results.stdout }}"
+#    - copy: content="{{ results.stdout | to_nice_json }}" dest="/root/template/HPE/MACAddress/{{ baseuri }}.MACaddress"
+
+
+#    - name: Save file
+
+
+#    - set_fact: 
+#        results= {{ results.stdout }}
+#    - debug: msg="{{ results }}"
+#    - copy: content="{{ results | to_nice_json }}" dest="/root/template/HPE/MACAddress/{{ baseuri }}.MAC"
+
+#    - name: Execute the command in remote shell; stdout goes to the specified file on the remote
+#        copy: cat /root/template/HPE/MACAddress/{{ baseuri }}.json | jq '.redfish_facts.nic.entries[]' | jq '.[1]'  | jq '.[1] | .MACAddress' > {{ baseuri }}.MAC 
+
+
+#    - copy: content="{{ jsoncontent | to_nice_json | jq '.plays[].tasks[]' | jq  'select (.task.name == "hpe.ilo.getnicinven : Get NIC Information")' | jq '.hosts.ilo2.redfish_facts.nic.entries[]' | jq '.[1]'  | jq '.[1] | .MACAddress' }}" dest="/root/template/HPE/test_file.json"
+#  - local_action: copy content={{ results }} dest=/path/to/destination/{{ inventory_hostname }}file
+#    - debug:
+#        msg: "{{ jsoncontent | map(attribute='redfish_facts') }}"
+     
+#    - name: Business Card
+#      community.general.json_query:
+#        debug: msg="{{ jsoncontent.json | json_query(jmesquery) }}"
+#        vars:
+#          jmesquery: "[*].redfish_facts"
+
+#    - name: Install the prereqs of the jc filter (jc Python package) on the Ansible controller
+#      delegate_to: localhost
+#      ansible.builtin.pip:
+#        name: jc
+#        state: present
+#    - name: Run command
+#       ansible.builtin.command: uname -a
+#       register: jsoncontent
+#    - name: Convert command's result to JSON
+#      ansible.builtin.debug:
+#        msg: "{{ jsoncontent.stdout | community.general.jc('uname') }}"

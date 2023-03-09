@@ -1,0 +1,26 @@
+
+#- name: basic conf
+#  hosts: ilo1
+#  become: yes
+#  roles:
+#  - get_physical_drives_details
+
+#- name: basic conf
+#  hosts: ilo2
+#  become: yes
+#  roles:
+#  - get_physical_drives_details
+
+---
+- hosts: ilo2
+  connection: local
+  gather_facts: false
+  collections:
+    - community.general
+    - hpe.ilo
+  roles:
+    - delete_all_logical_drives
+#    - poweron
+#    - create_logical_drives
+#    - poweron
+#    - reboot_system

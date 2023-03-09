@@ -1,0 +1,12 @@
+---
+# tasks file for poweron
+- name: Turn system power on
+  collections:
+    - community.general
+    - hpe.ilo
+  community.general.redfish_command:
+    category: Systems
+    command: PowerOn
+    baseuri: "{{ baseuri }}"
+    username: "{{ username }}"
+    password: "{{ password }}"

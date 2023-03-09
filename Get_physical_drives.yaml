@@ -1,0 +1,18 @@
+---
+- hosts: ilo2
+  connection: local
+  gather_facts: false
+  collections:
+    - community.general
+    - hpe.ilo
+  tasks:
+  - name: Get physical drives details
+    get_physical_drives_details:
+      baseuri: "10.1.17.4" #"{{ baseuri }}"
+      username: "admin" #"{{ username }}"
+      password: "admin123" #"{{ password }}"
+    register: physical_drives_details
+
+  - name: Physical drives present in the server
+    debug:
+      msg: "{{ physical_drives_details }}"

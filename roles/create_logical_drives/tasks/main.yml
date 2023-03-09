@@ -1,0 +1,14 @@
+---
+- name: Create logical drives
+  vars:
+    raid_details: [{"LogicalDriveName": "LD1","Raid": "Raid1","DataDrives": {"DataDriveCount": 3,"DataDriveMediaType": "HDD","DataDriveInterfaceType": "SATA","DataDriveMinimumSizeGiB": 0}}]
+  create_logical_drives:
+    baseuri: "{{ baseuri }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    raid_details: "{{ raid_details }}"
+  register: result
+
+- name: Status
+  debug:
+    msg: "{{ result }}"

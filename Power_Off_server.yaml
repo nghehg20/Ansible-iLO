@@ -1,0 +1,15 @@
+---
+- hosts: ilo1
+  connection: local
+  gather_facts: false
+  collections:
+    - community.general
+  tasks:
+  - name: Power off a server
+    community.general.redfish_command:
+      category: Manager
+      command: GracefulRestart
+      baseuri: "{{ baseuri }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+    delegate_to: localhost

@@ -1,0 +1,12 @@
+---
+# tasks file for powerforceoff
+- name: Turn system power off
+  collections:
+    - community.general
+    - hpe.ilo
+  community.general.redfish_command:
+    category: Systems
+    command: PowerForceOff
+    baseuri: "{{ baseuri }}"
+    username: "{{ username }}"
+    password: "{{ password }}"

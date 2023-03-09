@@ -1,0 +1,2 @@
+---
+raid_details: [{"LogicalDriveName": "LD1","Raid": "Raid1","DataDrives": {"DataDriveCount": 3,"DataDriveMediaType": "HDD","DataDriveInterfaceType": "SATA","DataDriveMinimumSizeGiB": 0}}]

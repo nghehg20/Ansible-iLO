@@ -1,0 +1,21 @@
+---
+- hosts: ilo1
+  connection: local
+  gather_facts: false
+  collections:
+    - community.general
+    - hpe.ilo
+  tasks:
+  - name: Get Firmware Update Capabilities
+    community.general.redfish_info:
+      category: Update
+      command: GetFirmwareUpdateCapabilities
+      baseuri: "{{ baseuri }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+    register: result
+
+  - name: Copy results to output file
+    ansible.builtin.copy:
+      content: "{{ result | to_nice_json }}"
+      dest: "/root/test.json"
