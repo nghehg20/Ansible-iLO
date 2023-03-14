@@ -1,0 +1,15 @@
+boto>=2.49.0
+botocore>=1.12.249
+pytz
+python-dateutil>=2.7.0
+awxkit
+packaging
+requests>=2.4.2
+xmltodict
+python_version >= '3.9'
+python_redfish>=0.4.4
+collection hpe.ilo
+collection community.general
+requests-oauthlib
+openstacksdk>=0.13
+ovirt-engine-sdk-python>=4.4.10
